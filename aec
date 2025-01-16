@@ -1,0 +1,411 @@
+1.Design a web counter application for the scenario discussed below. Consider that a
+class has 30 students, and the percentage of each student has also been given. Count the
+number of students who have cleared the previous exam with distinction (85% and
+above) and first class (60% to 84%). This information is required by the admin
+department to analyze how much scholarship needs to be released by college based on
+the count.
+import React, { useState } from "react";
+const CounterApp = () => {
+// Sample data of percentages for 30 students
+const studentPercentages = [
+92, 88, 74, 63, 85, 56, 90, 69, 82, 45,
+78, 91, 84, 66, 87, 89, 60, 95, 71, 88,
+59, 73, 80, 62, 77, 86, 55, 93, 81, 65
+];
+// State to store counts
+const [distinctionCount, setDistinctionCount] = useState(0);
+const [firstClassCount, setFirstClassCount] = useState(0);
+// Function to calculate counts
+const calculateCounts = () => {
+let distinction = 0;
+let firstClass = 0;
+studentPercentages.forEach((percentage) => {
+if (percentage >= 85) {
+distinction++;
+} else if (percentage >= 60 && percentage < 85) {
+firstClass++;
+}
+});
+setDistinctionCount(distinction);
+setFirstClassCount(firstClass);
+};
+return (
+<div style={{ textAlign: "center", marginTop: "50px" }}>
+<h1>Web Counter Application</h1>
+<p>Analyze student performance based on percentages</p>
+<button onClick={calculateCounts} style={{ padding: "10px 20px", fontSize: "16px"
+}}>
+Calculate Counts
+</button>
+<div style={{ marginTop: "20px" }}>
+<h2>Results:</h2>
+<p><strong>Distinction (85% and above):</strong> {distinctionCount}</p>
+<p><strong>First Class (60% to 84%):</strong> {firstClassCount}</p>
+</div>
+</div>
+);
+};
+export default CounterApp;
+2. Design a React JS application using forms. The application should contain a text area
+and the input text values should change when the state is updated. When the user
+changes the state, the application should print the updated value on the browser screen.
+import React, { useState } from "react";
+const TextAreaApp = () => {
+// State to store the text area value
+const [textValue, setTextValue] = useState("");
+// Function to handle input change
+const handleChange = (event) => {
+setTextValue(event.target.value);
+};
+return (
+<div style={{ textAlign: "center", marginTop: "50px" }}>
+<h1>React Text Area State Update</h1>
+{/* Text Area Input */}
+<textarea
+value={textValue}
+onChange={handleChange}
+placeholder="Type something..."
+rows={6}
+cols={50}
+style={{ marginTop: "20px", padding: "10px", fontSize: "16px" }}
+></textarea>
+{/* Display the updated value */}
+<div style={{ marginTop: "20px" }}>
+<h2>Updated Value:</h2>
+<p style={{ whiteSpace: "pre-wrap", fontSize: "18px" }}>{textValue}</p>
+</div>
+</div>
+);
+};
+export default TextAreaApp;
+3. Write a react application for Validating an input while it's receiving characters is
+another great application for use Effect. While the input is being stored in a state using
+useState, the validation takes place every time the input changes, giving immediate
+feedback to the user.
+import React, { useState, useEffect } from "react";
+const InputValidationApp = () => {
+// State to store the input value and validation message
+const [inputValue, setInputValue] = useState("");
+const [validationMessage, setValidationMessage] = useState("");
+// Function to handle input change
+const handleChange = (event) => {
+setInputValue(event.target.value);
+};
+// useEffect to validate the input on every change
+useEffect(() => {
+if (inputValue.length === 0) {
+setValidationMessage("Input is required.");
+} else if (inputValue.length < 5) {
+setValidationMessage("Input must be at least 5 characters long.");
+} else {
+setValidationMessage("Input is valid!");
+}
+}, [inputValue]); // Dependency array ensures this runs whenever inputValue changes
+return (
+<div style={{ textAlign: "center", marginTop: "50px" }}>
+<h1>React Input Validation with useEffect</h1>
+{/* Input Field */}
+<input
+type="text"
+value={inputValue}
+onChange={handleChange}
+placeholder="Type something..."
+style={{ padding: "10px", fontSize: "16px", width: "300px" }}
+/>
+{/* Validation Message */}
+<div style={{ marginTop: "20px" }}>
+<p style={{ fontSize: "18px", color: validationMessage === "Input is valid!" ? "green" :
+"red" }}>
+{validationMessage}
+</p>
+</div>
+</div>
+);
+};
+export default InputValidationApp;
+4. Dependency Injection: Design a java code for Injecting dependencies into classes,
+making them loosely coupled and easier to test.
+interface MessageService {
+void sendMessage(String message, String receiver);
+}
+// Email implementation of the service
+class EmailService implements MessageService {
+@Override
+public void sendMessage(String message, String receiver) {
+System.out.println("Email sent to " + receiver + " with message: " + message);
+}
+}
+// SMS implementation of the service
+class SMSService implements MessageService {
+@Override
+public void sendMessage(String message, String receiver) {
+System.out.println("SMS sent to " + receiver + " with message: " + message);
+}
+}
+// Consumer class that depends on the service
+class MessageProcessor {
+private MessageService messageService;
+// Constructor-based Dependency Injection
+public MessageProcessor(MessageService messageService) {
+this.messageService = messageService;
+}
+public void processMessage(String message, String receiver) {
+messageService.sendMessage(message, receiver);
+}
+}
+// Main class to test the implementation
+public class DependencyInjectionExample {
+public static void main(String[] args) {
+// Injecting EmailService dependency into MessageProcessor
+MessageService emailService = new EmailService();
+MessageProcessor emailProcessor = new MessageProcessor(emailService);
+emailProcessor.processMessage("Hello, Email!", "email@example.com");
+// Injecting SMSService dependency into MessageProcessor
+MessageService smsService = new SMSService();
+MessageProcessor smsProcessor = new MessageProcessor(smsService);
+smsProcessor.processMessage("Hello, SMS!", "123-456-7890");
+}
+}
+5. Bean Configuration and Management: Construct a bean configuration and
+Management program for defining and managing beans, including their lifecycle,
+scopes, and dependencies
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.*;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+// Service Interface
+interface PaymentService {
+void processPayment();
+}
+// Implementation of the PaymentService
+class CreditCardPaymentService implements PaymentService {
+@Override
+public void processPayment() {
+System.out.println("Processing payment using Credit Card");
+}
+}
+class PayPalPaymentService implements PaymentService {
+@Override
+public void processPayment() {
+System.out.println("Processing payment using PayPal");
+}
+}
+// Consumer class that depends on PaymentService
+class OrderService {
+private PaymentService paymentService;
+// Constructor-based Dependency Injection
+public OrderService(PaymentService paymentService) {
+this.paymentService = paymentService;
+}
+public void placeOrder() {
+System.out.println("Placing order...");
+paymentService.processPayment();
+}
+@PostConstruct
+public void init() {
+System.out.println("OrderService initialized.");
+}
+@PreDestroy
+public void destroy() {
+System.out.println("OrderService destroyed.");
+}
+}
+// Configuration class for defining beans
+@Configuration
+class AppConfig {
+// Define PaymentService bean
+@Bean
+@Scope("singleton")
+public PaymentService creditCardPaymentService() {
+return new CreditCardPaymentService();
+}
+@Bean
+@Scope("prototype")
+public PaymentService payPalPaymentService() {
+return new PayPalPaymentService();
+}
+// Define OrderService bean with dependency injection
+@Bean
+public OrderService orderService(PaymentService paymentService) {
+return new OrderService(paymentService);
+}
+}
+// Main class to test bean configuration and management
+public class BeanConfigurationExample {
+public static void main(String[] args) {
+// Initialize the application context
+ApplicationContext context = new
+AnnotationConfigApplicationContext(AppConfig.class);
+// Get the OrderService bean with a CreditCardPaymentService dependency
+OrderService orderService = context.getBean(OrderService.class);
+orderService.placeOrder();
+// Test prototype scope for PayPalPaymentService
+PaymentService payPal1 = context.getBean("payPalPaymentService",
+PaymentService.class);
+PaymentService payPal2 = context.getBean("payPalPaymentService",
+PaymentService.class);
+System.out.println("Are both PayPalPaymentService instances the same? " + (payPal1
+== payPal2)); // Should print false
+// Close the context
+((AnnotationConfigApplicationContext) context).close();
+}
+}
+6. a) Develop a simple web application that allows users to view and manage a list of
+books. b) Create the Book class. c) Create the BookController class to handle requests
+and manage the list of books d) Create the views using the Thymeleaf template engine.
+Assuming the templates are located in the resources/templates directory: e) add-
+book.html f) Configure the Spring MVC application using Java-based configuration. g)
+Create the main class to run the application.
+// a) Spring MVC Application for Book Management
+// b) Book Class
+public class Book {
+private int id;
+private String title;
+private String author;
+// Constructors
+public Book() {}
+public Book(int id, String title, String author) {
+this.id = id;
+this.title = title;
+this.author = author;
+}
+// Getters and Setters
+public int getId() {
+return id;
+}
+public void setId(int id) {
+this.id = id;
+}
+public String getTitle() {
+return title;
+}
+public void setTitle(String title) {
+this.title = title;
+}
+public String getAuthor() {
+return author;
+}
+public void setAuthor(String author) {
+this.author = author;
+}
+}
+// c) BookController Class
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
+@Controller
+@RequestMapping("/books")
+public class BookController {
+private List<Book> bookList = new ArrayList<>();
+// Constructor with sample data
+public BookController() {
+bookList.add(new Book(1, "Spring in Action", "Craig Walls"));
+bookList.add(new Book(2, "Clean Code", "Robert C. Martin"));
+}
+// Get all books
+@GetMapping
+public String getBooks(Model model) {
+model.addAttribute("books", bookList);
+return "book-list";
+}
+// Show the form to add a new book
+@GetMapping("/add")
+public String showAddBookForm(Model model) {
+model.addAttribute("book", new Book());
+return "add-book";
+}
+// Add a new book
+@PostMapping("/add")
+public String addBook(@ModelAttribute Book book) {
+book.setId(bookList.size() + 1);
+bookList.add(book);
+return "redirect:/books";
+}
+}
+// d) Thymeleaf Templates (resources/templates directory)
+// e) add-book.html
+/*
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Add Book</title>
+</head>
+<body>
+<h1>Add a New Book</h1>
+<form th:action="@{/books/add}" th:object="${book}" method="post">
+<label for="title">Title:</label>
+<input type="text" id="title" th:field="*{title}" required><br>
+<label for="author">Author:</label>
+<input type="text" id="author" th:field="*{author}" required><br>
+<button type="submit">Add Book</button>
+</form>
+</body>
+</html>
+*/
+// book-list.html
+/*
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Book List</title>
+</head>
+<body>
+<h1>Book List</h1>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="book : ${books}">
+<td th:text="${book.id}"></td>
+<td th:text="${book.title}"></td>
+<td th:text="${book.author}"></td>
+</tr>
+</tbody>
+</table>
+<a th:href="@{/books/add}">Add New Book</a>
+</body>
+</html>
+*/
+// f) Spring MVC Configuration
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "com.example.bookapp")
+public class WebConfig {
+@Bean
+public InternalResourceViewResolver viewResolver() {
+InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+resolver.setPrefix("/WEB-INF/views/");
+resolver.setSuffix(".html");
+return resolver;
+}
+}
+// g) Main Class to Run the Application
+import
+zer;
+org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitiali
+public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+@Override
+protected Class<?>[] getRootConfigClasses() {
+return null;
+}
+@Override
+protected Class<?>[] getServletConfigClasses() {
+return new Class[] { WebConfig.class };
+}
+@Override
+protected String[] getServletMappings() {
+}
+}
+return new String[] { "/" };
